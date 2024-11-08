@@ -2,12 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
 public class Player : MonoBehaviour
 {
+    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] private FixedJoystick _joystick;
+    [SerializeField] private Animator _animator;
+
     [SerializeField] private string name;
     [SerializeField] private int health;
     [SerializeField] private bool isDead;
     [SerializeField] private float speed;
+
+    private void FixedUpdate()
+    {
+        _rigidbody.velocity = new Vector3(_joystick.Horizontal * speed, _rigidbody.velocity.y, _joystick.Vertical * speed);
+        if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
+        {
+            transform.rotation = Quaternion.LookRotation(_rigidbody.velocity);
+        }
+
+        if (health <= 0)
+        {
+            _rigidbody.velocity = Vector3.zero;
+        }
+
+    }
+
     public void ApplyDamage(int damage)
     {
         this.health = this.health - damage;
@@ -17,6 +38,7 @@ public class Player : MonoBehaviour
         }
 
     }
+
     public void ApplyHeal(int heal) 
     {
         if (GetHealth() >= 100)
@@ -28,6 +50,7 @@ public class Player : MonoBehaviour
         this.health = this.health + heal;
         
     }
+
     public void Rename(string newName) 
     {
         this.name = newName;
