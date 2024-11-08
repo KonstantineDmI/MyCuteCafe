@@ -13,9 +13,6 @@ public class Tutor : MonoBehaviour
  
     void Start()
     {
-        newPlayer.GetSpeed();
-
-        newPlayer.ApplyHeal(5);
     }
 
     void Update()
