@@ -1,22 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+
 public class Player : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private FixedJoystick _joystick;
+    [SerializeField] private DynamicJoystick _joystick;
     [SerializeField] private Animator _animator;
 
     [SerializeField] private string name;
     [SerializeField] private int health;
     [SerializeField] private bool isDead;
     [SerializeField] private float speed;
+    [SerializeField] private float drag = 2f;
+    [SerializeField] private float smoothRotationSpeed = 10f;
 
     private void FixedUpdate()
     {
+        _rigidbody.drag = drag;
+        _rigidbody.angularDrag = drag;
+
         _rigidbody.velocity = new Vector3(_joystick.Horizontal * speed, _rigidbody.velocity.y, _joystick.Vertical * speed);
+
         if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
         {
             transform.rotation = Quaternion.LookRotation(_rigidbody.velocity);
@@ -28,7 +36,7 @@ public class Player : MonoBehaviour
         }
 
     }
-
+    
     public void ApplyDamage(int damage)
     {
         this.health = this.health - damage;
