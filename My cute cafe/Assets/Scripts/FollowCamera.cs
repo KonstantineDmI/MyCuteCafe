@@ -23,13 +23,12 @@ public class FollowCamera : MonoBehaviour
 
     private void Start()
     {
-        transform.rotation = Quaternion.Euler(tiltAngle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
+       
 
         initialY = transform.position.y;                
         playerRigidbody = player.GetComponent<Rigidbody>(); 
         initialRotation = transform.rotation;
-        initialOffset = offset;
-        targetOffset = initialOffset;
+      
     }
 
     private void LateUpdate()
@@ -39,6 +38,9 @@ public class FollowCamera : MonoBehaviour
 
     private void FollowOrLookAtPlayer()
     {
+        initialOffset = offset;
+        targetOffset = initialOffset;
+        transform.rotation = Quaternion.Euler(tiltAngle, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
         Vector3 playerVelocity = new Vector3(playerRigidbody.velocity.x, 0, playerRigidbody.velocity.z);
 
         if (playerVelocity.magnitude > movementThreshold)
@@ -65,7 +67,7 @@ public class FollowCamera : MonoBehaviour
 
     private void FollowPlayer()
     {
-        Vector3 targetPosition = new Vector3(player.position.x + offset.x, initialY, player.position.z + offset.z);
+        Vector3 targetPosition = new Vector3(player.position.x + offset.x, player.position.y + offset.y, player.position.z + offset.z);
         transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, followSpeed * Time.deltaTime);
     }
