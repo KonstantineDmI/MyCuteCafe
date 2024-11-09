@@ -10,13 +10,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private DynamicJoystick _joystick;
     [SerializeField] private Animator _animator;
-
+          
     [SerializeField] private string name;
     [SerializeField] private int health;
     [SerializeField] private bool isDead;
     [SerializeField] private float speed;
-    [SerializeField] private float drag = 2f;
-    [SerializeField] private float smoothRotationSpeed = 10f;
+    [SerializeField] private float drag;
+    [SerializeField] private float smoothRotationSpeed;
+    
 
     private void FixedUpdate()
     {
@@ -44,4 +45,4 @@ public class Player : MonoBehaviour
         }
     }
 
-}
+}   
