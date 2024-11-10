@@ -17,7 +17,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float drag;
     [SerializeField] private float smoothRotationSpeed;
-    
+    [SerializeField] private float pickupRange = 2f;
+
+    private GameObject currentItem;
 
     private void FixedUpdate()
     {
@@ -45,4 +47,38 @@ public class Player : MonoBehaviour
         }
     }
 
-}   
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Item"))
+        {
+            currentItem = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Item") && currentItem == other.gameObject)
+        {
+            currentItem = null;
+        }
+    }
+
+    private void Update()
+    {
+        if (currentItem != null && Vector3.Distance(transform.position, currentItem.transform.position) <= pickupRange)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                PickUpItem(currentItem);
+            }
+
+        }
+    }
+
+    private void PickUpItem(GameObject item)
+    {
+        Debug.Log("Подобрано: " + item.name);
+        Destroy(item);
+    }
+
+}
