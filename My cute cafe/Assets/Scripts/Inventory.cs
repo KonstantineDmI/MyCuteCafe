@@ -58,6 +58,10 @@ public class Inventory : MonoBehaviour
             return false;
         }
     }
+    public Dictionary<string, int> GetItems()
+    {
+        return items; 
+    }
 
     public int GetItemAmount(string itemName)
     {
